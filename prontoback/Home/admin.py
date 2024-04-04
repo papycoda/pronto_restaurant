@@ -5,6 +5,7 @@ from  .models import *
 admin.site.register(Category)
 admin.site.register(FoodItem)
 admin.site.register(DrinkItem)
+admin.site.register(GrubItem)
 admin.site.register(Table)
 admin.site.register(Order)
 admin.site.register(OrderItem)
