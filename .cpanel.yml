@@ -1,5 +1,12 @@
+# ---
+# deployment:
+#   tasks:
+#     - export DEPLOYPATH=/home2/thepront/public_html/staging
+#     - /bin/cp -R prontoback $DEPLOYPATH
+
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home2/thepront/public_html/staging
-    - /bin/cp -R prontoback $DEPLOYPATH
+    - export DEPLOYPATH=/home/thepront/public_html/
+    - /bin/cp index.html $DEPLOYPATH
+    - /bin/cp style.css $DEPLOYPATH
