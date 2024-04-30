@@ -7,6 +7,6 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/thepront/public_html/
+    - export DEPLOYPATH=/home2/thepront/public_html/
     - /bin/cp index.html $DEPLOYPATH
     - /bin/cp style.css $DEPLOYPATH
