@@ -1,4 +1,4 @@
------
+---
 deployment:
   tasks:
     - export DEPLOYPATH=/home2/thepront/public_html/staging
