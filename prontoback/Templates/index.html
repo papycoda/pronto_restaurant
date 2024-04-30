@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-
+  {% load static %}  
 <head>
   <!-- Basic -->
   <meta charset="utf-8" />
@@ -11,24 +11,21 @@
   <meta name="keywords" content="" />
   <meta name="description" content="" />
   <meta name="author" content="" />
-  <link rel="shortcut icon" href="images/favicon.png" type="">
+  <link rel="shortcut icon" href="{% static 'images/favicon.png' %}" type="">
 
   <title>The Pronto, Ilorin || Restaurant & Lounge in Ilorin</title>
 
   <!-- bootstrap core css -->
-  <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}" />
 
   <!--owl slider stylesheet -->
+  
   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
-  <!-- nice select  -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css" integrity="sha512-CruCP+TD3yXzlvvijET8wV5WxxEh5H8P4cmz0RFbKK6FlZ2sYl3AEsKlLPHbniXKSrDdFewhbmBK5skbdsASbQ==" crossorigin="anonymous" />
-  <!-- font awesome style -->
-  <link href="css/font-awesome.min.css" rel="stylesheet" />
+  <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet" />  
 
-  <!-- Custom styles for this template -->
-  <link href="css/style.css" rel="stylesheet" />
-  <!-- responsive style -->
-  <link href="css/responsive.css" rel="stylesheet" />
+  <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+  <link href="{% static 'css/responsive.css' %}" rel="stylesheet" />
 
 </head>
 
@@ -36,7 +33,7 @@
 
   <div class="hero_area">
     <div class="bg-box">
-      <img src="images/hero-bg.jpg" alt="">
+      <img src="{% static 'images/hero4.webp' %}" alt="Hero Background Image"> 
     </div>
     <!-- header section strats -->
     <header class="header_section">
@@ -44,7 +41,7 @@
         <nav class="navbar navbar-expand-lg custom_nav-container ">
           <a class="navbar-brand" href="index.html">
             <span>
-              Feane
+              Pronto
             </span>
           </a>
 
@@ -149,7 +146,7 @@
                 <div class="col-md-7 col-lg-6 ">
                   <div class="detail-box">
                     <h1>
-                      Fast Food Restaurant
+                      Restaurant Delicacies
                     </h1>
                     <p>
                       Doloremque, itaque aperiam facilis rerum, commodi, temporibus sapiente ad mollitia laborum quam quisquam esse error unde. Tempora ex doloremque, labore, sunt repellat dolore, iste magni quos nihil ducimus libero ipsam.
@@ -170,7 +167,7 @@
                 <div class="col-md-7 col-lg-6 ">
                   <div class="detail-box">
                     <h1>
-                      Fast Food Restaurant
+                      Drinks & Cocktails
                     </h1>
                     <p>
                       Doloremque, itaque aperiam facilis rerum, commodi, temporibus sapiente ad mollitia laborum quam quisquam esse error unde. Tempora ex doloremque, labore, sunt repellat dolore, iste magni quos nihil ducimus libero ipsam.
@@ -191,7 +188,7 @@
                 <div class="col-md-7 col-lg-6 ">
                   <div class="detail-box">
                     <h1>
-                      Fast Food Restaurant
+                      Chops
                     </h1>
                     <p>
                       Doloremque, itaque aperiam facilis rerum, commodi, temporibus sapiente ad mollitia laborum quam quisquam esse error unde. Tempora ex doloremque, labore, sunt repellat dolore, iste magni quos nihil ducimus libero ipsam.
@@ -229,7 +226,8 @@
           <div class="col-md-6  ">
             <div class="box ">
               <div class="img-box">
-                <img src="images/o1.jpg" alt="">
+                <img src="{% static 'images/o1.jpg' %}" alt="">
+                <!-- {% static 'images/hero-bg.jpg' %} -->
               </div>
               <div class="detail-box">
                 <h5>
@@ -298,7 +296,7 @@
           <div class="col-md-6  ">
             <div class="box ">
               <div class="img-box">
-                <img src="images/o2.jpg" alt="">
+                <img src="{% static 'images/o2.jpg' %}" alt="">
               </div>
               <div class="detail-box">
                 <h5>
@@ -395,7 +393,7 @@
             <div class="box">
               <div>
                 <div class="img-box">
-                  <img src="images/f1.png" alt="">
+                  <img src="{% static 'images/f1.png' %}" alt="">
                 </div>
                 <div class="detail-box">
                   <h5>
@@ -471,7 +469,7 @@
             <div class="box">
               <div>
                 <div class="img-box">
-                  <img src="images/f2.png" alt="">
+                  <img src="{% static 'images/f2.png' %}" alt="">
                 </div>
                 <div class="detail-box">
                   <h5>
@@ -547,7 +545,7 @@
             <div class="box">
               <div>
                 <div class="img-box">
-                  <img src="images/f3.png" alt="">
+                  <img src="{% static 'images/f3.png' %}" alt="">
                 </div>
                 <div class="detail-box">
                   <h5>
@@ -623,7 +621,7 @@
             <div class="box">
               <div>
                 <div class="img-box">
-                  <img src="images/f4.png" alt="">
+                  <img src="{% static 'images/f4.png' %}" alt="">
                 </div>
                 <div class="detail-box">
                   <h5>
@@ -699,7 +697,7 @@
             <div class="box">
               <div>
                 <div class="img-box">
-                  <img src="images/f5.png" alt="">
+                  <img src="{% static 'images/f5.png' %}" alt="">
                 </div>
                 <div class="detail-box">
                   <h5>
@@ -775,7 +773,7 @@
             <div class="box">
               <div>
                 <div class="img-box">
-                  <img src="images/f6.png" alt="">
+                  <img src="{% static 'images/f6.png' %}" alt="">
                 </div>
                 <div class="detail-box">
                   <h5>
@@ -851,7 +849,7 @@
             <div class="box">
               <div>
                 <div class="img-box">
-                  <img src="images/f7.png" alt="">
+                  <img src="{% static 'images/f7.png' %}" alt="">
                 </div>
                 <div class="detail-box">
                   <h5>
@@ -927,7 +925,7 @@
             <div class="box">
               <div>
                 <div class="img-box">
-                  <img src="images/f8.png" alt="">
+                  <img src="{% static 'images/f8.png' %}" alt="">
                 </div>
                 <div class="detail-box">
                   <h5>
@@ -1003,7 +1001,7 @@
             <div class="box">
               <div>
                 <div class="img-box">
-                  <img src="images/f9.png" alt="">
+                  <img src="{% static 'images/f9.png' %}" alt="">
                 </div>
                 <div class="detail-box">
                   <h5>
@@ -1095,14 +1093,14 @@
       <div class="row">
         <div class="col-md-6 ">
           <div class="img-box">
-            <img src="images/about-img.png" alt="">
+            <img src="{% static 'images/about-img.png' %}" alt="">
           </div>
         </div>
         <div class="col-md-6">
           <div class="detail-box">
             <div class="heading_container">
               <h2>
-                We Are Feane
+                We Are Pronto
               </h2>
             </div>
             <p>
@@ -1208,7 +1206,7 @@
                 </p>
               </div>
               <div class="img-box">
-                <img src="images/client1.jpg" alt="" class="box-img">
+                <img src="{% static 'images/client1.jpg' %}" alt="" class="box-img">
               </div>
             </div>
           </div>
@@ -1226,7 +1224,7 @@
                 </p>
               </div>
               <div class="img-box">
-                <img src="images/client2.jpg" alt="" class="box-img">
+                <img src="{% static 'images/client2.jpg' %}" alt="" class="box-img">
               </div>
             </div>
           </div>
@@ -1271,7 +1269,7 @@
         <div class="col-md-4 footer-col">
           <div class="footer_detail">
             <a href="" class="footer-logo">
-              Feane
+              Pronto
             </a>
             <p>
               Necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with
@@ -1310,9 +1308,9 @@
       <div class="footer-info">
         <p>
           &copy; <span id="displayYear"></span> All Rights Reserved By
-          <a href="https://html.design/">Free Html Templates</a><br><br>
-          &copy; <span id="displayYear"></span> Distributed By
-          <a href="https://themewagon.com/" target="_blank">ThemeWagon</a>
+          <a href="theprontoilorin.com">The Pronto, Ilorin</a><br><br>
+          &copy; <span id="displayYear"></span> Developed By
+          <a href="papycoda.dev" target="_blank">Papycoda</a>
         </p>
       </div>
     </div>
@@ -1320,25 +1318,26 @@
   <!-- footer section -->
 
   <!-- jQery -->
-  <script src="js/jquery-3.4.1.min.js"></script>
-  <!-- popper js -->
+
+  <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
   </script>
-  <!-- bootstrap js -->
-  <script src="js/bootstrap.js"></script>
-  <!-- owl slider -->
+
+  <script src="{% static 'js/bootstrap.js' %}"></script>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js">
   </script>
-  <!-- isotope js -->
+
   <script src="https://unpkg.com/isotope-layout@3.0.4/dist/isotope.pkgd.min.js"></script>
-  <!-- nice select -->
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"></script>
-  <!-- custom js -->
-  <script src="js/custom.js"></script>
-  <!-- Google Map -->
+
+  <script src="{% static 'js/custom.js' %}"></script>
+
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap">
   </script>
-  <!-- End Google Map -->
+
 
 </body>
 
