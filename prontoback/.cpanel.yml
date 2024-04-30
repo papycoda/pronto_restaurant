@@ -1,5 +1,5 @@
 -----
 deployment:
   tasks:
-    - export DEPLOYPATH=/home2/thepront/public_html/staging
+    - export DEPLOYPATH=/home2/thepront/public_html/
     - /bin/cp -R prontoback $DEPLOYPATH
