@@ -5,5 +5,13 @@ from django.http import HttpResponse
 
 def HomePageView (request):
     return render(request, 'index.html')
-    
+
+def MenuView (request):
+    return render(request, 'menu.html')
+
+def AboutView(request):
+    return render(request, 'about.html')
+
+def BookView(request):
+    return render(request, 'book.html')
 
