@@ -8,12 +8,15 @@
 </head>
 
 <body>
+  {% block hero_image %}
+  {% static 'images/back.png' %}
+  {% endblock %}
+  
   {% block content %}
   <div class="hero_area">
     <div class="bg-box">
       <img src="{% static 'images/hero4.webp' %}" alt="Hero Background Image">
     </div>
-    
     <!-- slider section -->
     <section class="slider_section ">
       <div id="customCarousel1" class="carousel slide" data-ride="carousel">
