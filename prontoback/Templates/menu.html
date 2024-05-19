@@ -41,7 +41,7 @@
                   <h5>{{ item.name }}</h5>
                   <p>{{ item.description }}</p>
                   <div class="options">
-                    <h6>${{ item.price }}</h6>  
+                    <h6>₦{{ item.price }}</h6> 
                     </a>
                   </div>
                 </div>
@@ -51,10 +51,7 @@
         {% endfor %}
       </div>
     </div>
-    
-    <div class="btn-box">
-      <a href="#">View More</a>
-    </div>
+
   </div>
 </section>
 {% endblock %}
