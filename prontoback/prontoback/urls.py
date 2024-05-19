@@ -10,4 +10,5 @@ urlpatterns = [
     path('menu/', views.MenuView, name="menu"),
     path('about/', views.AboutView, name="about"), 
     path('book/', views.BookView, name="book"),
+    path('import/', views.import_from_excel, name='import_from_excel'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
