@@ -35,8 +35,12 @@
             <div class="col-sm-6 col-lg-4 all {{ category.name|slugify }}">
               <div class="box">
                 <div class="img-box">
-                  <img src="{{ item.image_url }}" alt="{{ item.name }}">  
-                </div>
+                  {% if item.image_url %}
+                      <img src="{{ item.image_url }}" alt="{{ item.name }}">
+                  {% else %}
+                      <img src="{{ item.category.default_image_url }}" alt="{{ item.name }}">
+                  {% endif %}
+              </div>              
                 <div class="detail-box">
                   <h5>{{ item.name }}</h5>
                   <p>{{ item.description }}</p>
