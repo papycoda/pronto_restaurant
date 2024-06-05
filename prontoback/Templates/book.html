@@ -1,71 +1,62 @@
-<!DOCTYPE html>
-<html>
+{% extends 'base.html' %}
+{% load static %}
 
-<head>
-  {% extends 'base.html' %}
-  {% load static %}
-  {% block title %}Book{% endblock %}
-</head>
+{% block title %}Book A Table{% endblock %}
 
-  <!-- book section -->
-  <section class="book_section layout_padding">
-    <div class="container">
-      <div class="heading_container">
-        <h2>
-          Book A Table
-        </h2>
-      </div>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="form_container">
-            <form action="">
-              <div>
-                <input type="text" class="form-control" placeholder="Your Name" />
-              </div>
-              <div>
-                <input type="text" class="form-control" placeholder="Phone Number" />
-              </div>
-              <div>
-                <input type="email" class="form-control" placeholder="Your Email" />
-              </div>
-              <div>
-                <select class="form-control nice-select wide">
-                  <option value="" disabled selected>
-                    How many persons?
-                  </option>
-                  <option value="">
-                    2
-                  </option>
-                  <option value="">
-                    3
-                  </option>
-                  <option value="">
-                    4
-                  </option>
-                  <option value="">
-                    5
-                  </option>
-                </select>
-              </div>
-              <div>
-                <input type="date" class="form-control">
-              </div>
-              <div class="btn_box">
-                <button>
-                  Book Now
-                </button>
-              </div>
-            </form>
-          </div>
+{% block hero_image %}
+{% static 'images/drink_col.webp' %}
+{% endblock %}
+{% block content %}
+<section class="book_section layout_padding">
+  <div class="container">
+    <div class="heading_container">
+      <h2>Book A Table</h2>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form_container">
+          <form action="">  
+            {% csrf_token %} 
+            <div>
+              <input type="text" class="form-control" name="customer_name" placeholder="Your Name" required>
+            </div>
+            <div>
+              <input type="text" class="form-control" name="contact_info" placeholder="Phone Number" required>
+            </div>
+            <div>
+              <input type="email" class="form-control" name="email" placeholder="Your Email" required>
+            </div>
+            <div>
+              <select class="form-control nice-select wide" name="number_of_people" required>
+                <option value="" disabled selected>How many persons?</option>
+                {% for i in '12345678'|make_list %}
+                    <option value="{{ i }}">{{ i }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div>
+              <input type="datetime-local" class="form-control" name="date_time" required> 
+            </div>
+            <div>
+              <select class="form-control nice-select wide" name="table" required>
+                <option value="" disabled selected>Select a Table</option>
+                {% for table in tables %} 
+                    <option value="{{ table.id }}">Table {{ table.number }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="btn_box">
+              <button type="submit">Book Now</button>
+            </div>
+          </form>
         </div>
-        <div class="col-md-6">
-          <div class="map_container ">
-            <div id="googleMap"></div>
-          </div>
+      </div>
+      <div class="col-md-6">
+        <div class="map_container">
+          <div id="googleMap"></div>  
         </div>
       </div>
     </div>
-  </section>
-  <!-- end book section -->
-
-  
+  </div>
+</section>
+{% endblock %}

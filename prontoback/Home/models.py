@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 class Category(models.Model):
     name = models.CharField(max_length=20, unique=True)
-    default_image_url = models.URLField(blank=True, null=True)
+    default_image = models.ImageField(upload_to='images/', blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -17,7 +17,7 @@ class MenuItem(models.Model):
     description = models.TextField(blank=True, null=True)
     price = models.DecimalField(max_digits=15, decimal_places=2, blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='menu_items')
-    image_url = models.URLField(blank=True, null=True)
+    image = models.ImageField(upload_to='images/', blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -71,3 +71,25 @@ class Reservation(models.Model):
 
     def __str__(self):
         return f"Reservation for {self.customer_name} on {self.date_time} at {self.table}"
+
+class Event(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    date = models.DateField()
+    time = models.TimeField()
+    location = models.CharField(max_length=100,default='The Pronto, Ilorin')
+    image = models.ImageField(upload_to='event_images/', blank=True, null=True)
+    ticket_url = models.URLField(blank=True, null=True) 
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = "Events"
+        ordering = ['date']
+
+    def save(self, *args, **kwargs):
+        if not self.ticket_url:
+            self.ticket_url = None
+        super().save(*args, **kwargs)
+        
