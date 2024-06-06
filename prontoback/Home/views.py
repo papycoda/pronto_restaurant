@@ -13,8 +13,7 @@ def HomePageView (request):
     return render(request, 'index.html')
 
 def MenuView(request):
-    """
-    Renders the menu view.
+    """Renders the menu view.
     
     This function retrieves the categories and menu items from the database. It first fetches all the categories and their associated menu items using the `prefetch_related` method. The categories are then ordered by their name.
     
