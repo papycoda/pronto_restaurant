@@ -13,6 +13,16 @@ def HomePageView (request):
     return render(request, 'index.html')
 
 def MenuView(request):
+    """
+    Renders the menu view.
+    
+    This function retrieves the categories and menu items from the database. It first fetches all the categories and their associated menu items using the `prefetch_related` method. The categories are then ordered by their name.
+    
+    If a `category` parameter is provided in the request, the function filters the menu items based on the selected category. It uses the `filter` method to retrieve the menu items whose category name matches the selected category (case-insensitive). If no `category` parameter is provided, it retrieves all the menu items.
+    
+    The menu items are then paginated using the `Paginator` class, with 8 items per page. The current page number is retrieved from the request's query parameters.
+    
+    Finally, the function creates a context dictionary with the categories, paginated menu items, and the selected category. It renders the 'menu.html' template with this context."""
     categories = Category.objects.prefetch_related(
         'menu_items').order_by('name')
     selected_category = request.GET.get('category')

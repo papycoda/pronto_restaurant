@@ -38,7 +38,7 @@
                   {% if item.image %}
                       <img src="{{ item.image.url }}" alt="{{ item.name }}">  
                   {% else %}
-                      <img src="{% static 'images/default_image' %}" alt="Default Image">  
+                      <img src="{{ category.default_image.url }}" alt="{{ category.name }}">
                   {% endif %}
               </div>              
                 <div class="detail-box">

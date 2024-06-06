@@ -6,7 +6,7 @@ from imagekit.processors import ResizeToFit
 
 class Category(models.Model):
     name = models.CharField(max_length=20, unique=True)
-    default_image = models.ImageField(upload_to='images/', blank=True, null=True)
+    default_image = models.ImageField(upload_to='Static/images/', blank=True, null=True)
 
     def __str__(self):
         return self.name
