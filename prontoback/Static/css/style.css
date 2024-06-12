@@ -753,4 +753,47 @@ a:focus {
 }
 .footer_section .footer-info p a {
   color: inherit;
+}
+
+.gallery {
+  margin-top: 40px;
+  /* Create four equal columns that sits next to each other */
+  /* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+}
+.gallery .gallery-row {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 4px;
+}
+.gallery .column {
+  flex: 25%;
+  max-width: 33.3%;
+  padding: 0 4px;
+}
+.gallery .column img {
+  margin-top: 8px;
+  vertical-align: middle;
+  width: 100%;
+  filter: grayscale(1) brightness(0.5);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s linear;
+}
+.gallery .column img:hover {
+  filter: grayscale(0);
+}
+@media screen and (max-width: 800px) {
+  .gallery .column {
+    flex: 50%;
+    max-width: 50%;
+  }
+}
+@media screen and (max-width: 600px) {
+  .gallery .column {
+    flex: 100%;
+    max-width: 100%;
+  }
+  .gallery .column img {
+    filter: grayscale(0) brightness(1);
+  }
 }/*# sourceMappingURL=style.css.map */
