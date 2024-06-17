@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Home',
     'imagekit',
+    'recurrence',
 ]
 
 MIDDLEWARE = [

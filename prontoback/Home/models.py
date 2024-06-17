@@ -1,8 +1,11 @@
+from datetime import datetime
+from django.utils import timezone
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFit
+from recurrence.fields import RecurrenceField
 from django.core.files.storage import FileSystemStorage
 
 class CustomStaticFileStorage(FileSystemStorage):
@@ -43,15 +46,35 @@ class MenuItem(models.Model):
             raise ValidationError(_('Price cannot be negative.'))
         super().save(*args, **kwargs)
 
-
 class Table(models.Model):
     number = models.IntegerField(unique=True)
     capacity = models.IntegerField()
-    is_occupied = models.BooleanField(default=False)
-    order = models.OneToOneField('Order', on_delete=models.SET_NULL, null=True, blank=True, related_name='table_associated')
+    table_group = models.CharField(max_length=50, choices=[
+        ('bar', 'Bar'),
+        ('lounge', 'Lounge'),
+        ('outdoor', 'Outdoor')
+    ])
+    is_reserved = models.BooleanField(default=False)
+    reserved_until = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
-        return f"Table {self.number}"
+
+        return f"{self.table_group} Table {self.number}"
+
+class Reservation(models.Model):
+    customer_name = models.CharField(max_length=100)
+    contact_info = models.CharField(max_length=100)
+    email = models.EmailField()
+    date_time = models.DateTimeField()
+    table = models.ForeignKey(Table, on_delete=models.CASCADE, related_name='reservations')
+    status = models.CharField(max_length=20, choices=[
+        ('Pending', 'Pending'),
+        ('Confirmed', 'Confirmed'),
+        ('Cancelled', 'Cancelled')
+    ], default='Pending')
+
+    def __str__(self):
+        return f"Reservation for {self.customer_name} on {self.date_time} at {self.table}"
 
 
 class Order(models.Model):
@@ -74,40 +97,28 @@ class OrderItem(models.Model):
         return f"{self.quantity} x {self.menu_item.name} (Order: {self.order.id})"
 
 
-class Reservation(models.Model):
-    customer_name = models.CharField(max_length=100)
-    contact_info = models.CharField(max_length=100)
-    date_time = models.DateTimeField()
-    table = models.ForeignKey(Table, on_delete=models.CASCADE, related_name='reservations')  # Add related_name
-    status = models.CharField(max_length=20, choices=[
-        ('Pending', 'Pending'),
-        ('Confirmed', 'Confirmed'),
-        ('Cancelled', 'Cancelled')
-    ], default='Pending')
-
-    def __str__(self):
-        return f"Reservation for {self.customer_name} on {self.date_time} at {self.table}"
-
 class Event(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
-    date = models.DateField()
-    time = models.TimeField()
-    location = models.CharField(max_length=100,default='The Pronto, Ilorin')
+    start_date = models.DateField(null=True, blank=True)
+    end_date = models.DateField(null=True, blank=True)  
+    time = models.TimeField(null=True, blank=True)       
+
+    location = models.CharField(max_length=100, default='The Pronto, Ilorin')
     image = models.ImageField(upload_to='event_images/', blank=True, null=True)
-    ticket_url = models.URLField(blank=True, null=True) 
+    ticket_url = models.URLField(blank=True, null=True)
+    recurrence = RecurrenceField(null=True, blank=True)
 
     def __str__(self):
         return self.name
 
     class Meta:
         verbose_name_plural = "Events"
-        ordering = ['date']
+        ordering = ['start_date']
 
     def save(self, *args, **kwargs):
         if not self.ticket_url:
             self.ticket_url = None
         super().save(*args, **kwargs)
-        
 
  

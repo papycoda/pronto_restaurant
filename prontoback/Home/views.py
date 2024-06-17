@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from openpyxl import load_workbook
 from .models import *
@@ -6,6 +6,9 @@ from django.contrib.auth.decorators import user_passes_test
 from django.core.paginator import Paginator
 from datetime import datetime
 from django.core.mail import send_mail
+from django.contrib import messages
+from datetime import datetime, timedelta
+from django.db import transaction
 
 
 
@@ -46,52 +49,103 @@ def MenuView(request):
 
 def AboutView(request):
     return render(request, 'about.html')
-
 def BookView(request):
+    """
+    Handles table booking requests for the restaurant.
+    
+    This view processes the POST request from the booking form, validates the data,
+    checks table availability, creates a reservation, and sends a notification email
+    to the admin. It also handles errors and provides appropriate feedback to the user.
+    
+    Args:
+        request (HttpRequest): The HTTP request object.
+        
+    Returns:
+        HttpResponse: The HTTP response object with the booking page or a success message.
+    """
     if request.method == 'POST':
-        name = request.POST.get('name')
+        # Extract form data from the POST request
+        customer_name = request.POST.get('customer_name')
+        contact_info = request.POST.get('contact_info')
         email = request.POST.get('email')
-        date = request.POST.get('date')
-        time = request.POST.get('time')
-        persons = request.POST.get('persons')
-        phone = request.POST.get('phone')
-        message = request.POST.get('message')
+        date_time = request.POST.get('date_time')
+        number_of_people = request.POST.get('number_of_people')
+        table_id = request.POST.get('table')
 
         try:
+            # Parse the date and time from the form input and make it timezone-aware
+            start_time = timezone.make_aware(datetime.strptime(date_time, "%Y-%m-%dT%H:%M"), timezone.get_current_timezone())
+            duration = timedelta(hours=2)
+
+            # Define restaurant operating hours (make them timezone-aware)
+            restaurant_opening_time = timezone.make_aware(datetime.combine(start_time.date(), datetime.strptime("10:00", "%H:%M").time()), timezone.get_current_timezone())
+            restaurant_closing_time = timezone.make_aware(datetime.combine(start_time.date(), datetime.strptime("22:00", "%H:%M").time()), timezone.get_current_timezone())
+            
+            # Validate the reservation time is within operating hours
+            if not (restaurant_opening_time <= start_time <= restaurant_closing_time and 
+                    restaurant_opening_time <= (start_time + duration) <= restaurant_closing_time):
+                raise ValueError("Reservation time is outside of operating hours.")
+
+            # Retrieve the selected table from the database
+            table = Table.objects.get(id=table_id)
+
+            # Check if the table is available for the requested time
+            if table.is_reserved and table.reserved_until > start_time:
+                raise ValueError("The selected table is not available for the requested time.")
+
+            # Create a new reservation
             booking = Reservation.objects.create(
-                name=name,
+                customer_name=customer_name,
+                contact_info=contact_info,
                 email=email,
-                date=date,
-                time=time,
-                persons=persons,
-                phone=phone,
-                message=message
+                date_time=start_time,
+                table=table,
+                status='Pending'
             )
             booking.save()
 
-            
-            subject = f'New Booking: {name}'
-            message = f'Name: {name}, Email: {email}, Date: {date}, Time: {time}, Persons: {persons}, Phone: {phone}, Message: {message}'
-            send_mail(subject, message, 'admin@example.com', ['admin@example.com'])
+            # Update the table's reservation status
+            table.is_reserved = True
+            table.reserved_until = start_time + duration
+            table.save()
 
-            return render(request, 'book_success.html')
+            # Send an email notification to the admin
+            subject = f'New Booking: {customer_name}'
+            message_content = (
+                f'Name: {customer_name}\n'
+                f'Contact Info: {contact_info}\n'
+                f'Email: {email}\n'
+                f'Date and Time: {date_time}\n'
+                f'Number of People: {number_of_people}\n'
+                f'Table Group: {table.table_group}'
+            )
+            send_mail(subject, message_content, 'your-email@example.com', ['admin@example.com'])
+
+            # Display success message and redirect to home page
+            messages.success(request, 'Reservation successful! An admin will reach out to you to confirm the reservation.')
+            return redirect('index')
 
         except Exception as e:
-            print(f'Error saving booking: {str(e)}')
+            # Handle any errors that occur and display an error message
+            messages.error(request, f'Error saving booking: {str(e)}')
+            return render(request, 'book.html', {'tables': Table.objects.all()})
 
-    return render(request, 'book.html')
+    # Render the booking page with the available tables
+    return render(request, 'book.html', {'tables': Table.objects.all()})
 
 def event_list(request):
     events = Event.objects.all()
-    if not events:
-        events = [Event(
-            name='Placeholder Event',
-            description='This is a placeholder event.',
-            date=datetime.now().date(),
-            time=datetime.now().time(),
-            location='Placeholder Location',
-        )]
-    return render(request, 'events.html', {'events': events})
+
+    for event in events:
+        if event.recurrence:
+            event.next_occurrence = event.recurrence.after(timezone.now())
+        else:
+            event.next_occurrence = None  # or any other default value
+    
+    context = {
+        'events': events
+    }
+    return render(request, 'event_list.html', context)
 
 
 @user_passes_test(lambda u: u.is_superuser)

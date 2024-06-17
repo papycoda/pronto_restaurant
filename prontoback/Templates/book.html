@@ -15,7 +15,7 @@
     <div class="row">
       <div class="col-md-6">
         <div class="form_container">
-          <form action="">  
+          <form method="post">  
             {% csrf_token %} 
             <div>
               <input type="text" class="form-control" name="customer_name" placeholder="Your Name" required>
@@ -38,10 +38,18 @@
               <input type="datetime-local" class="form-control" name="date_time" required> 
             </div>
             <div>
-              <select class="form-control nice-select wide" name="table" required>
+              <select class="form-control nice-select wide" id="table_group" name="table_group" required>
+                <option value="" disabled selected>Select Seating Preference</option>
+                <option value="bar">Bar</option>
+                <option value="lounge">Lounge</option>
+                <option value="outdoor">Outdoor</option>
+              </select>
+            </div>
+            <div>
+              <select class="form-control nice-select wide" id="table" name="table" required>
                 <option value="" disabled selected>Select a Table</option>
-                {% for table in tables %} 
-                    <option value="{{ table.id }}">Table {{ table.number }}</option>
+                {% for table in tables %}
+                    <option value="{{ table.id }}" data-group="{{ table.table_group }}">Table {{ table.number }}</option>
                 {% endfor %}
               </select>
             </div>
@@ -60,3 +68,22 @@
   </div>
 </section>
 {% endblock %}
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const tableSelect = document.getElementById('table');
+    const tableGroupSelect = document.getElementById('table_group');
+
+    tableGroupSelect.addEventListener('change', function () {
+      const selectedGroup = this.value;
+
+      Array.from(tableSelect.options).forEach(option => {
+        if (option.value && option.getAttribute('data-group') !== selectedGroup) {
+          option.style.display = 'none';
+        } else {
+          option.style.display = 'block';
+        }
+      });
+    });
+  });
+</script>
