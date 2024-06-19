@@ -1,12 +1,14 @@
-from datetime import datetime
-from django.utils import timezone
+import datetime
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFit
-from recurrence.fields import RecurrenceField
+#from recurrence.fields import RecurrenceField
 from django.core.files.storage import FileSystemStorage
+from datetime import datetime, timedelta
+import pytz
+from django.utils import timezone
 
 class CustomStaticFileStorage(FileSystemStorage):
     def _save(self, name, content):
@@ -56,6 +58,8 @@ class Table(models.Model):
     ])
     is_reserved = models.BooleanField(default=False)
     reserved_until = models.DateTimeField(null=True, blank=True)
+    order = models.OneToOneField('Order', on_delete=models.SET_NULL, null=True, blank=True, related_name='table_associated')
+
 
     def __str__(self):
 
@@ -96,29 +100,65 @@ class OrderItem(models.Model):
     def __str__(self):
         return f"{self.quantity} x {self.menu_item.name} (Order: {self.order.id})"
 
-
 class Event(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
-    start_date = models.DateField(null=True, blank=True)
-    end_date = models.DateField(null=True, blank=True)  
-    time = models.TimeField(null=True, blank=True)       
-
+    date = models.DateField(blank = True, null = True)
+    start_time = models.TimeField()
+    end_time = models.TimeField()
     location = models.CharField(max_length=100, default='The Pronto, Ilorin')
-    image = models.ImageField(upload_to='event_images/', blank=True, null=True)
+    image = models.ImageField(upload_to='Static/images/', blank=True, null=True)
     ticket_url = models.URLField(blank=True, null=True)
-    recurrence = RecurrenceField(null=True, blank=True)
+    recurring = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
 
     class Meta:
         verbose_name_plural = "Events"
-        ordering = ['start_date']
+        ordering = ['start_time']
 
     def save(self, *args, **kwargs):
         if not self.ticket_url:
             self.ticket_url = None
         super().save(*args, **kwargs)
 
- 
+    def get_next_occurrence(self):
+        now = datetime.now(pytz.UTC)
+        today = now.weekday()  # Monday is 0 and Sunday is 6
+        start_time_today = datetime.combine(now.date(), self.start_time).replace(tzinfo=pytz.UTC)
+        end_time_today = datetime.combine(now.date(), self.end_time).replace(tzinfo=pytz.UTC)
+        
+        # Check if the event is today and hasn't ended yet
+        if start_time_today <= now <= end_time_today:
+            return start_time_today
+        
+        # Find the next occurrence day
+        event_days = [day.day_of_week for day in self.days.all()]
+        days_ahead = [(day - today + 7) % 7 for day in range(7) if day in event_days]
+        
+        if not days_ahead:
+            return None
+        
+        days_until_next = min(days_ahead)
+        next_occurrence_date = now.date() + timedelta(days=days_until_next)
+        next_occurrence = datetime.combine(next_occurrence_date, self.start_time).replace(tzinfo=pytz.UTC)
+        
+        return next_occurrence
+
+class EventDay(models.Model):
+    DAYS_OF_WEEK = [
+        ('Monday', 'Monday'),
+        ('Tuesday', 'Tuesday'),
+        ('Wednesday', 'Wednesday'),
+        ('Thursday', 'Thursday'),
+        ('Friday', 'Friday'),
+        ('Saturday', 'Saturday'),
+        ('Sunday', 'Sunday'),
+    ]
+    event = models.ForeignKey(Event, related_name='days', on_delete=models.CASCADE)
+    day_of_week = models.CharField(max_length=9, choices=DAYS_OF_WEEK)
+
+    def __str__(self):
+        return f"{self.event.name} on {self.day_of_week}"
+

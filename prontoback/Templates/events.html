@@ -19,24 +19,23 @@
       <div class="card-body">
         <h5 class="card-title">{{ event.name }}</h5>
         <p class="card-text">
-
-          {% if event.recurrence %}
-        <p>
-          Recurrence: {{ event.recurrence.humanize }}<br>
-
-          {% if event.next_occurrence %}
-          Next Occurrence: {{ event.next_occurrence|date:"D d M Y" }} at {{ event.next_occurrence|time:"g:i A" }}
+          {% if event.recurring %}
+            <p><i class="fa-solid fa-repeat"></i>
+              {% for day in event.days.all %}
+                {{ day.day_of_week }}{% if not forloop.last %}, {% endif %}
+              {% endfor %}
+            </p>
+            {% if event.next_occurrence %}
+              <p><i class="fa fa-clock"></i>{{ event.next_occurrence|time:"g:i A" }}</p>
+            {% else %}
+              <p>No upcoming occurrences.</p>
+            {% endif %}
           {% else %}
-          No upcoming occurrences.
+            <p><i class="fa-regular fa-calendar"></i> {{ event.date|date:"D d M Y" }}</p>
+            <p><i class="far fa-clock"></i> {{ event.start_time }} - {{ event.end_time }}</p>
           {% endif %}
-        </p>
-        {% else %}
-        Date: {{ event.start_date }}<br>
-        Time: {{ event.time }}<br>
-        {% endif %}
-
-        Location: {{ event.location }}<br>
-        Description: {{ event.description }}
+          <p><i class="fa-solid fa-location-arrow"></i>  {{ event.location }}</p>
+          <p>{{ event.description }}</p>
         </p>
 
         {% if event.ticket_url %}
@@ -53,38 +52,24 @@
     <div class="container-fluid">
       <div class="gallery-row">
         <div class="column">
-          <img
-            src="https://images.pexels.com/photos/3586966/pexels-photo-3586966.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" />
-          <img
-            src="https://images.pexels.com/photos/2419375/pexels-photo-2419375.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" />
-          <img
-            src="https://images.pexels.com/photos/2326290/pexels-photo-2326290.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" />
-          <img
-            src="https://images.pexels.com/photos/3251006/pexels-photo-3251006.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" />
-          <img
-            src="https://images.pexels.com/photos/1980720/pexels-photo-1980720.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" />
+          <img src="https://images.pexels.com/photos/3586966/pexels-photo-3586966.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" />
+          <img src="https://images.pexels.com/photos/2419375/pexels-photo-2419375.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" />
+          <img src="https://images.pexels.com/photos/2326290/pexels-photo-2326290.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" />
+          <img src="https://images.pexels.com/photos/3251006/pexels-photo-3251006.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" />
+          <img src="https://images.pexels.com/photos/1980720/pexels-photo-1980720.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" />
         </div>
         <div class="column">
-          <img
-            src="https://images.pexels.com/photos/3546429/pexels-photo-3546429.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500">
-          <img
-            src="https://images.pexels.com/photos/3889868/pexels-photo-3889868.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500">
-          <img
-            src="https://images.pexels.com/photos/2091160/pexels-photo-2091160.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940">
-          <img
-            src="https://images.pexels.com/photos/2019546/pexels-photo-2019546.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940">
+          <img src="https://images.pexels.com/photos/3546429/pexels-photo-3546429.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500">
+          <img src="https://images.pexels.com/photos/3889868/pexels-photo-3889868.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500">
+          <img src="https://images.pexels.com/photos/2091160/pexels-photo-2091160.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940">
+          <img src="https://images.pexels.com/photos/2019546/pexels-photo-2019546.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940">
         </div>
         <div class="column">
-          <img
-            src="https://images.pexels.com/photos/3889868/pexels-photo-3889868.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" />
-          <img
-            src="https://images.pexels.com/photos/2360569/pexels-photo-2360569.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" />
-          <img
-            src="https://images.pexels.com/photos/3779785/pexels-photo-3779785.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500">
-          <img
-            src="https://images.pexels.com/photos/259987/pexels-photo-259987.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500">
-          <img
-            src="https://images.pexels.com/photos/2350514/pexels-photo-2350514.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500">
+          <img src="https://images.pexels.com/photos/3889868/pexels-photo-3889868.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" />
+          <img src="https://images.pexels.com/photos/2360569/pexels-photo-2360569.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" />
+          <img src="https://images.pexels.com/photos/3779785/pexels-photo-3779785.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500">
+          <img src="https://images.pexels.com/photos/259987/pexels-photo-259987.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500">
+          <img src="https://images.pexels.com/photos/2350514/pexels-photo-2350514.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500">
         </div>
       </div>
     </div>

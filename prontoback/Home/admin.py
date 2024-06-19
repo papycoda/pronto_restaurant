@@ -9,6 +9,7 @@ admin.site.register(Order)
 admin.site.register(OrderItem)
 admin.site.register(Reservation)
 admin.site.register(Event)
+admin.site.register(EventDay)
 @admin.register(MenuItem)
 
 class MenuItemAdmin(admin.ModelAdmin):

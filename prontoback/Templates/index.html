@@ -102,39 +102,33 @@
 
   <section class="offer_section layout_padding-bottom">
     <div class="offer_container">
-      <div class="container ">
+      <div class="container">
         <div class="row">
-          <div class="col-md-6  ">
-            <div class="box ">
-              <div class="img-box">
-                <img src="{% static 'images/red_cocktail.webp' %}" alt="">
-                <!-- {% static 'images/hero-bg.jpg' %} -->
+          <div class="col-md-6">
+            <a href="{% url 'events'%}" class="offer_link">
+              <div class="box">
+                <div class="img-box">
+                  <img src="{% static 'images/red_cocktail.webp' %}" alt="Happy Hour">
+                </div>
+                <div class="detail-box">
+                  <h5>Happy Hour</h5>
+                  <h6><span>10% Off</span> on cocktail and mocktails when you dine in.</h6>
+                </div>
               </div>
-              <div class="detail-box">
-                <h5>
-                  Happy hours (2pm to 6pm, Monday to Thursday)
-                </h5>
-                <h6>
-                  <span>10% Off </span> on cocktail and mocktails when you dine in.
-                </h6>
-                
-              </div>
-            </div>
+            </a>
           </div>
-          <div class="col-md-6  ">
-            <div class="box ">
-              <div class="img-box">
-                <img src="{% static 'images/cocktails.webp'%}" alt="">
+          <div class="col-md-6">
+            <a href="{% url 'events' %}" class="offer_link">
+              <div class="box">
+                <div class="img-box">
+                  <img src="{% static 'images/cocktails.webp' %}" alt="Ladies night">
+                </div>
+                <div class="detail-box">
+                  <h5>Ladies night</h5>
+                  <h6><span>50%</span> Off cocktail and mocktails for ladies</h6>
+                </div>
               </div>
-              <div class="detail-box">
-                <h5>
-                  Ladies night
-                </h5>
-                <h6>
-                  <span>50%</span> Off cocktail and mocktails for ladies
-                </h6>
-              </div>
-            </div>
+            </a>
           </div>
         </div>
       </div>

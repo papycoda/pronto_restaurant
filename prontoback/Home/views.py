@@ -4,11 +4,10 @@ from openpyxl import load_workbook
 from .models import *
 from django.contrib.auth.decorators import user_passes_test
 from django.core.paginator import Paginator
-from datetime import datetime
 from django.core.mail import send_mail
 from django.contrib import messages
-from datetime import datetime, timedelta
-from django.db import transaction
+from django.utils import timezone
+import datetime
 
 
 
@@ -134,18 +133,31 @@ def BookView(request):
     return render(request, 'book.html', {'tables': Table.objects.all()})
 
 def event_list(request):
-    events = Event.objects.all()
+    """
+    Display a list of events with their next occurrences.
+    
+    This view retrieves all events from the database, calculates the next occurrence
+    for recurring events, and passes the events to the template for rendering.
+    
+    Args:
+        request (HttpRequest): The HTTP request object.
+        
+    Returns:
+        HttpResponse: The HTTP response object with the event list page.
+    """
+    events = Event.objects.prefetch_related('days').all()
+    now = timezone.now()  
 
     for event in events:
-        if event.recurrence:
-            event.next_occurrence = event.recurrence.after(timezone.now())
-        else:
-            event.next_occurrence = None  # or any other default value
-    
+        event.next_occurrence = event.get_next_occurrence()
+
     context = {
         'events': events
     }
-    return render(request, 'event_list.html', context)
+
+    return render(request, 'events.html', context)
+
+
 
 
 @user_passes_test(lambda u: u.is_superuser)
