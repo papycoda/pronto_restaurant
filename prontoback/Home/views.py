@@ -189,3 +189,73 @@ def import_from_excel(request):
 
     return render(request, 'import_form.html') 
 
+
+
+
+# def import_from_excel(request, model, field_mapping, category_model=None, category_field=None):
+#     """
+#     Imports data from an Excel file and creates model instances.
+
+#     Args:
+#         request: The HTTP request object.
+#         model: The Django model class to create instances for.
+#         field_mapping: A dictionary mapping model fields to column indices in the Excel file.
+#         category_model: (Optional) The Django model class for categories.
+#         category_field: (Optional) The field in the data that represents the category.
+
+#     Returns:
+#         A rendered template response.
+#     """
+#     if request.method == 'POST':
+#         # Retrieve the uploaded Excel file from the request
+#         excel_file = request.FILES['excel_file']
+#         # Load the workbook and get the active worksheet
+#         wb = load_workbook(excel_file)
+#         ws = wb.active
+
+#         # Iterate over the rows in the worksheet, starting from the second row
+#         for row in ws.iter_rows(min_row=2, values_only=True):
+#             try:
+#                 # Map row values to the model fields using the field_mapping
+#                 data = {field: row[idx] for field, idx in field_mapping.items()}
+
+#                 # If category information is provided, handle category creation/association
+#                 if category_model and category_field:
+#                     # Extract the category name from the data dictionary
+#                     category_name = data.pop(category_field)
+#                     # Get or create the category instance
+#                     category, created = category_model.objects.get_or_create(name=category_name)
+#                     # Add the category to the data dictionary
+#                     data['category'] = category
+
+#                 # Create a new instance of the model with the mapped data
+#                 model.objects.create(**data)
+#             except Exception as e:
+#                 # Print an error message if there is an exception while processing the row
+#                 print(f"Error processing row {row}: {e}")
+
+#         # Render the success template after processing the Excel file
+#         return render(request, 'import_success.html')
+
+#     # Render the form template if the request method is not POST
+#     return render(request, 'import_form.html')
+
+# # Usage example
+# def import_menu_items(request):
+#     """
+#     Handles the import of menu items from an Excel file.
+
+#     Args:
+#         request: The HTTP request object.
+
+#     Returns:
+#         A rendered template response from the import_from_excel function.
+#     """
+#     # Define the mapping of model fields to Excel column indices
+#     field_mapping = {
+#         'name': 1,          # Column B
+#         'description': 2,   # Column C
+#         'price': 3,         # Column D
+#     }
+#     # Call the import function with the MenuItem model and Category model
+#     return import_from_excel(request, MenuItem, field_mapping, Category, 'category')

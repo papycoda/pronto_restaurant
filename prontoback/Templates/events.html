@@ -10,43 +10,45 @@
   {% block content %}
   <h2>Upcoming Events</h2>
 
-  <div class="event-list">
-    {% for event in events %}
-    <div class="card" style="width: 18rem;">
-      {% if event.image %}
-      <img src="{{ event.image.url }}" alt="{{ event.name }}" class="card-img-top">
-      {% endif %}
-      <div class="card-body">
-        <h5 class="card-title">{{ event.name }}</h5>
-        <p class="card-text">
-          {% if event.recurring %}
-            <p><i class="fa-solid fa-repeat"></i>
-              {% for day in event.days.all %}
+  <div class="container">
+    <div class="row d-flex flex-wrap">
+      {% for event in events %}
+      <div class="col-md-4 mb-4 d-flex align-items-stretch">
+        <div class="card" style="width: 100%;{% if event.image %} background-image: url('{{ event.image.url }}'); background-size: cover; background-position: center;{% endif %}">
+          <div class="card-body d-flex flex-column" style="background-color: rgba(255, 255, 255, 0.8);">
+            <h5 class="card-title">{{ event.name }}</h5>
+            <p class="card-text flex-grow-1">
+              {% if event.recurring %}
+              <p><i class="fa-solid fa-repeat"></i>
+                {% for day in event.days.all %}
                 {{ day.day_of_week }}{% if not forloop.last %}, {% endif %}
-              {% endfor %}
-            </p>
-            {% if event.next_occurrence %}
+                {% endfor %}
+              </p>
+              {% if event.next_occurrence %}
               <p><i class="fa fa-clock"></i>{{ event.next_occurrence|time:"g:i A" }}</p>
-            {% else %}
+              {% else %}
               <p>No upcoming occurrences.</p>
+              {% endif %}
+              {% else %}
+              <p><i class="fa-regular fa-calendar"></i> {{ event.date|date:"D d M Y" }}</p>
+              <p><i class="far fa-clock"></i> {{ event.start_time }} - {{ event.end_time }}</p>
+              {% endif %}
+              <p><i class="fa-solid fa-location-arrow"></i> {{ event.location }}</p>
+              <p>{{ event.description }}</p>
+            </p>
+  
+            {% if event.ticket_url %}
+            <a href="{{ event.ticket_url }}" class="btn btn-primary mt-auto">Get Ticket</a>
+            {% else %}
+            <p class="mt-auto"> </p>
             {% endif %}
-          {% else %}
-            <p><i class="fa-regular fa-calendar"></i> {{ event.date|date:"D d M Y" }}</p>
-            <p><i class="far fa-clock"></i> {{ event.start_time }} - {{ event.end_time }}</p>
-          {% endif %}
-          <p><i class="fa-solid fa-location-arrow"></i>  {{ event.location }}</p>
-          <p>{{ event.description }}</p>
-        </p>
-
-        {% if event.ticket_url %}
-        <a href="{{ event.ticket_url }}" class="btn btn-primary">Get Ticket</a>
-        {% else %}
-        <p>Tickets not yet available</p>
-        {% endif %}
+          </div>
+        </div>
       </div>
+      {% endfor %}
     </div>
-    {% endfor %}
   </div>
+  
 
   <div class='gallery'>
     <div class="container-fluid">
@@ -76,5 +78,4 @@
   </div>
 
   {% endblock %}
-
 </body>

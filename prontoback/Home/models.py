@@ -100,10 +100,14 @@ class OrderItem(models.Model):
     def __str__(self):
         return f"{self.quantity} x {self.menu_item.name} (Order: {self.order.id})"
 
+from datetime import timedelta, datetime
+import pytz
+from django.utils import timezone
+
 class Event(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
-    date = models.DateField(blank = True, null = True)
+    date = models.DateField(blank=True, null=True)
     start_time = models.TimeField()
     end_time = models.TimeField()
     location = models.CharField(max_length=100, default='The Pronto, Ilorin')
@@ -123,27 +127,46 @@ class Event(models.Model):
             self.ticket_url = None
         super().save(*args, **kwargs)
 
+    def get_event_days(self):
+        return [day.day_of_week for day in self.days.all()]
+
     def get_next_occurrence(self):
-        now = datetime.now(pytz.UTC)
+        now = timezone.now()
         today = now.weekday()  # Monday is 0 and Sunday is 6
         start_time_today = datetime.combine(now.date(), self.start_time).replace(tzinfo=pytz.UTC)
         end_time_today = datetime.combine(now.date(), self.end_time).replace(tzinfo=pytz.UTC)
-        
+
         # Check if the event is today and hasn't ended yet
         if start_time_today <= now <= end_time_today:
             return start_time_today
+
+        # For non-recurring events
+        if not self.recurring:
+            if self.date and self.date >= now.date():
+                return datetime.combine(self.date, self.start_time).replace(tzinfo=pytz.UTC)
+            return None
+
+        # For recurring events
+        event_days = self.get_event_days()
+        day_to_int = {
+            'Monday': 0, 'Tuesday': 1, 'Wednesday': 2, 'Thursday': 3,
+            'Friday': 4, 'Saturday': 5, 'Sunday': 6
+        }
+        event_days_int = [day_to_int[day] for day in event_days]
+
+        days_ahead = [(day - today + 7) % 7 for day in event_days_int]
         
-        # Find the next occurrence day
-        event_days = [day.day_of_week for day in self.days.all()]
-        days_ahead = [(day - today + 7) % 7 for day in range(7) if day in event_days]
+        # Include today if the event hasn't started yet
+        if today in event_days_int and now.time() <= self.start_time:
+            days_ahead.append(0)
         
         if not days_ahead:
             return None
-        
+
         days_until_next = min(days_ahead)
         next_occurrence_date = now.date() + timedelta(days=days_until_next)
         next_occurrence = datetime.combine(next_occurrence_date, self.start_time).replace(tzinfo=pytz.UTC)
-        
+
         return next_occurrence
 
 class EventDay(models.Model):
@@ -161,4 +184,5 @@ class EventDay(models.Model):
 
     def __str__(self):
         return f"{self.event.name} on {self.day_of_week}"
+
 
