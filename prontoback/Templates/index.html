@@ -93,19 +93,17 @@
           </ol>
         </div>
       </div>
-
     </section>
     <!-- end slider section -->
   </div>
 
   <!-- offer section -->
-
   <section class="offer_section layout_padding-bottom">
     <div class="offer_container">
       <div class="container">
         <div class="row">
           <div class="col-md-6">
-            <a href="{% url 'events'%}" class="offer_link">
+            <a href="{% url 'events' %}" class="offer_link">
               <div class="box">
                 <div class="img-box">
                   <img src="{% static 'images/red_cocktail.webp' %}" alt="Happy Hour">
@@ -134,95 +132,96 @@
       </div>
     </div>
   </section>
-
   <!-- end offer section -->
 
   <!-- about section -->
-
   <section class="about_section layout_padding">
     <div class="container  ">
 
       <div class="row">
         <div class="col-md-6 ">
           <div class="img-box">
-            <img src="{% static 'images/outside.jpg' %}" alt="">
+            <img src="{% static 'images/pronto_logo.jpg' %}" alt="" style="border-radius: 50%;">
           </div>
         </div>
         <div class="col-md-6">
           <div class="detail-box">
             <div class="heading_container">
               <h2>
-                We Are Pronto
+                The Pronto Ilorin
               </h2>
             </div>
             <p>
-              Pronto Ilorin
+              Pronto Ilorin is a vibrant restaurant and lounge in Ilorin, offering delicious meals,
+              refreshing drinks, and a cozy ambiance for all to enjoy.
+              We also boast a serene space, to cater to your aesthetic venue needs.
             </p>
-            <a href="about">
+            <a href="">
               Read More
             </a>
           </div>
         </div>
       </div>
     </div>
-  </section>
-
+  </section>  
   <!-- end about section -->
 
   <!-- book section -->
   <section class="book_section layout_padding">
     <div class="container">
       <div class="heading_container">
-        <h2>
-          Book A Table
-        </h2>
+        <h2>Book A Table</h2>
       </div>
       <div class="row">
         <div class="col-md-6">
           <div class="form_container">
-            <form action="">
+            <form method="post">  
+              {% csrf_token %} 
               <div>
-                <input type="text" class="form-control" placeholder="Your Name" />
+                <input type="text" class="form-control" name="customer_name" placeholder="Your Name" required>
               </div>
               <div>
-                <input type="text" class="form-control" placeholder="Phone Number" />
+                <input type="text" class="form-control" name="contact_info" placeholder="Phone Number" required>
               </div>
               <div>
-                <input type="email" class="form-control" placeholder="Your Email" />
+                <input type="email" class="form-control" name="email" placeholder="Your Email" required>
               </div>
               <div>
-                <select class="form-control nice-select wide">
-                  <option value="" disabled selected>
-                    How many persons?
-                  </option>
-                  <option value="2">
-                    2
-                  </option>
-                  <option value="3">
-                    3
-                  </option>
-                  <option value="4">
-                    4
-                  </option>
-                  <option value="5">
-                    5
-                  </option>
+                <select class="form-control nice-select wide" name="number_of_people" required>
+                  <option value="" disabled selected>How many persons?</option>
+                  {% for i in '12345678'|make_list %}
+                      <option value="{{ i }}">{{ i }}</option>
+                  {% endfor %}
                 </select>
               </div>
               <div>
-                <input type="date" class="form-control">
+                <input type="datetime-local" class="form-control" name="date_time" required> 
+              </div>
+              <div>
+                <select class="form-control nice-select wide" id="table_group" name="table_group" required>
+                  <option value="" disabled selected>Select Seating Preference</option>
+                  <option value="bar">Bar</option>
+                  <option value="lounge">Lounge</option>
+                  <option value="outdoor">Outdoor</option>
+                </select>
+              </div>
+              <div>
+                <select class="form-control nice-select wide" id="table" name="table" required>
+                  <option value="" disabled selected>Select a Table</option>
+                  {% for table in tables %}
+                      <option value="{{ table.id }}" data-group="{{ table.table_group }}">Table {{ table.number }}</option>
+                  {% endfor %}
+                </select>
               </div>
               <div class="btn_box">
-                <button>
-                  Book Now
-                </button>
+                <button type="submit">Book Now</button>
               </div>
             </form>
           </div>
         </div>
         <div class="col-md-6">
-          <div class="map_container ">
-            <div id="googleMap"></div>
+          <div class="map_container">
+            <div id="googleMap"></div>  
           </div>
         </div>
       </div>
@@ -231,7 +230,6 @@
   <!-- end book section -->
 
   <!-- client section -->
-
   <section class="client_section layout_padding-bottom">
     <div class="container">
       <div class="heading_container heading_center psudo_white_primary mb_45">
@@ -283,12 +281,9 @@
       </div>
     </div>
   </section>
-
   <!-- end client section -->
 
   {% endblock %}
-
-
 </body>
 
 </html>
