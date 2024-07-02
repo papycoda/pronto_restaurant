@@ -78,12 +78,31 @@
       const selectedGroup = this.value;
 
       Array.from(tableSelect.options).forEach(option => {
-        if (option.value && option.getAttribute('data-group') !== selectedGroup) {
-          option.style.display = 'none';
-        } else {
-          option.style.display = 'block';
+        if (option.value && option.getAttribute('data-group')) {
+          if (option.getAttribute('data-group') === selectedGroup) {
+            option.style.display = '';
+          } else {
+            option.style.display = 'none';
+          }
         }
       });
+
+      // Reset the table select to the first visible option or a placeholder
+      let firstVisibleOptionFound = false;
+      for (let i = 0; i < tableSelect.options.length; i++) {
+        if (tableSelect.options[i].style.display === '') {
+          tableSelect.selectedIndex = i;
+          firstVisibleOptionFound = true;
+          break;
+        }
+      }
+
+      if (!firstVisibleOptionFound) {
+        tableSelect.selectedIndex = 0;
+      }
     });
+
+    // Trigger change event on page load to apply initial state
+    tableGroupSelect.dispatchEvent(new Event('change'));
   });
 </script>

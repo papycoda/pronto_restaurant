@@ -124,7 +124,7 @@
             <a href="{% url 'events' %}" class="offer_link">
               <div class="box">
                 <div class="img-box">
-                  <img src="{% static 'images/cocktails.webp' %}" alt="Ladies night">
+                  <img src="{% static 'images/pinkmilkshake.webp' %}" alt="Ladies night">
                 </div>
                 <div class="detail-box">
                   <h5>Ladies night</h5>
@@ -258,7 +258,7 @@
                 </p>
               </div>
               <div class="img-box">
-                <img src="{% static 'images/akin pronto.png' %}" alt="" class="box-img">
+                <img src="{% static 'images/akin-pronto.png' %}" alt="" class="box-img">
               </div>
             </div>
           </div>
@@ -276,7 +276,7 @@
                 </p>
               </div>
               <div class="img-box">
-                <img src="{% static 'images/habeeb ope.png' %}" alt="" class="box-img">
+                <img src="{% static 'images/habeeb-ope.png' %}" alt="" class="box-img">
               </div>
             </div>
           </div>
@@ -288,5 +288,43 @@
 
   {% endblock %}
 </body>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const tableSelect = document.getElementById('table');
+    const tableGroupSelect = document.getElementById('table_group');
+
+    tableGroupSelect.addEventListener('change', function () {
+      const selectedGroup = this.value;
+
+      Array.from(tableSelect.options).forEach(option => {
+        if (option.value && option.getAttribute('data-group')) {
+          if (option.getAttribute('data-group') === selectedGroup) {
+            option.style.display = '';
+          } else {
+            option.style.display = 'none';
+          }
+        }
+      });
+
+      // Reset the table select to the first visible option or a placeholder
+      let firstVisibleOptionFound = false;
+      for (let i = 0; i < tableSelect.options.length; i++) {
+        if (tableSelect.options[i].style.display === '') {
+          tableSelect.selectedIndex = i;
+          firstVisibleOptionFound = true;
+          break;
+        }
+      }
+
+      if (!firstVisibleOptionFound) {
+        tableSelect.selectedIndex = 0;
+      }
+    });
+
+    // Trigger change event on page load to apply initial state
+    tableGroupSelect.dispatchEvent(new Event('change'));
+  });
+</script>
 
 </html>
