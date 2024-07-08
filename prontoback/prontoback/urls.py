@@ -11,6 +11,10 @@ js_info_dict = {
     'packages': ('recurrence', ),
 }
 
+admin.site.site_header = "Pronto Admin Panel"
+admin.site.site_title = "Pronto Admin Panel"
+admin.site.index_title = "Welcome to Pronto Admin"
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.HomePageView, name="home"),  
