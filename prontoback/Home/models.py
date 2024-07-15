@@ -34,9 +34,9 @@ class MenuItem(models.Model):
     price = models.DecimalField(max_digits=15, decimal_places=2, blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='menu_items')
     image = ProcessedImageField(upload_to='Static/images/', 
-                                processors=[ResizeToFit(width=300, height=150)], 
-                                format='JPEG', 
-                                options={'quality': 90}, 
+                                processors=[ResizeToFit(width=310, height=140)], 
+                                format='webp', 
+                                options={'quality': 80}, 
                                 blank=True, 
                                 null=True)
 

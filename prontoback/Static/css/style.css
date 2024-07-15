@@ -416,10 +416,11 @@ a:focus {
 }
 .food_section .box .img-box img {
   width: 100%;
-  height: 145px;
-  -o-object-fit: cover;
-     object-fit: cover;
+  height: 100%;
+  -o-object-fit: fill;
+     object-fit: fill;
   transition: all 0.2s;
+  border-radius: 0 15% 0 15%;
 }
 .food_section .box .detail-box {
   padding: 25px;
