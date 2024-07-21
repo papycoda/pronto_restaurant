@@ -7,7 +7,7 @@ from django.core.paginator import Paginator
 from django.core.mail import send_mail
 from django.contrib import messages
 from django.utils import timezone
-import datetime
+from datetime import datetime
 
 
 
@@ -48,6 +48,7 @@ def MenuView(request):
 
 def AboutView(request):
     return render(request, 'about.html')
+
 def BookView(request):
     """
     Handles table booking requests for the restaurant.
