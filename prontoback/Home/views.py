@@ -52,14 +52,14 @@ def AboutView(request):
 def BookView(request):
     """
     Handles table booking requests for the restaurant.
-    
+
     This view processes the POST request from the booking form, validates the data,
     checks table availability, creates a reservation, and sends a notification email
     to the admin. It also handles errors and provides appropriate feedback to the user.
-    
+
     Args:
         request (HttpRequest): The HTTP request object.
-        
+
     Returns:
         HttpResponse: The HTTP response object with the booking page or a success message.
     """
@@ -80,7 +80,7 @@ def BookView(request):
             # Define restaurant operating hours (make them timezone-aware)
             restaurant_opening_time = timezone.make_aware(datetime.combine(start_time.date(), datetime.strptime("10:00", "%H:%M").time()), timezone.get_current_timezone())
             restaurant_closing_time = timezone.make_aware(datetime.combine(start_time.date(), datetime.strptime("22:00", "%H:%M").time()), timezone.get_current_timezone())
-            
+
             # Validate the reservation time is within operating hours
             if not (restaurant_opening_time <= start_time <= restaurant_closing_time and 
                     restaurant_opening_time <= (start_time + duration) <= restaurant_closing_time):
@@ -119,11 +119,17 @@ def BookView(request):
                 f'Number of People: {number_of_people}\n'
                 f'Table Group: {table.table_group}'
             )
-            send_mail(subject, message_content, 'your-email@example.com', ['admin@example.com'])
+            send_mail(
+                subject,
+                message_content,
+                'your-email@example.com',
+                ['admin@example.com'],
+                fail_silently=False,
+            )
 
             # Display success message and redirect to home page
             messages.success(request, 'Reservation successful! An admin will reach out to you to confirm the reservation.')
-            return redirect('index')
+            return redirect('home')
 
         except Exception as e:
             # Handle any errors that occur and display an error message
@@ -132,6 +138,7 @@ def BookView(request):
 
     # Render the booking page with the available tables
     return render(request, 'book.html', {'tables': Table.objects.all()})
+
 
 def event_list(request):
     """

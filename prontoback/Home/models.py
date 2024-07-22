@@ -80,16 +80,6 @@ class Reservation(models.Model):
     def __str__(self):
         return f"Reservation for {self.customer_name} on {self.date_time} at {self.table}"
 
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-        send_mail(
-            'New Reservation',
-            f'New reservation for {self.customer_name} on {self.date_time} at {self.table}',
-            'info@theprontoilorin.com',
-            ['admin@theprontoilorin.com'],
-            fail_silently=False,
-        )
-
 
 class Order(models.Model):
     table = models.ForeignKey(Table, on_delete=models.CASCADE, related_name='orders_placed')
