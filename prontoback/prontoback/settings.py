@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-ivvnrtw2m7_27*@2nfn6^a=y&l0*g*1_s#rd*q%f(sgm6wi*rf
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['staging.theprontoilorin.com','127.0.0.1','prod.theprontoilorin.com']
+ALLOWED_HOSTS = ['www.theprontoilorin.com','theprontoilorin.com']
 
 
 # Application definition
