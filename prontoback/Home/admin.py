@@ -7,11 +7,11 @@ from django.db.models import F
 admin.site.register(Category)
 admin.site.register(Order)
 admin.site.register(OrderItem)
-admin.site.register(Reservation)
+
 admin.site.register(Event)
 admin.site.register(EventDay)
-@admin.register(MenuItem)
 
+@admin.register(MenuItem)
 class MenuItemAdmin(admin.ModelAdmin):
     list_filter = ('category',)
     list_display = ('name', 'price', 'category')
@@ -20,4 +20,10 @@ class MenuItemAdmin(admin.ModelAdmin):
 #table admin
 @admin.register(Table)
 class TableAdmin(admin.ModelAdmin):
-    list_display = ('table_group','number','capacity', 'is_reserved')
+    list_display = ('table_group','number','capacity')
+
+@admin.register(Reservation)
+class ReservationAdmin(admin.ModelAdmin):
+    list_display = ('customer_name','date_time','table', 'status')
+    list_filter = ('customer_name','status',)
+
