@@ -12,6 +12,17 @@ from django.utils import timezone
 
 class CustomStaticFileStorage(FileSystemStorage):
     def _save(self, name, content):
+        """
+        Saves a file to the storage system, checking if the file already exists before saving.
+
+        Args:
+            name (str): The name of the file to be saved.
+            content: The content of the file to be saved.
+
+        Returns:
+            str: The name of the saved file, or the existing file name if the file already exists.
+        """
+
         if self.exists(name):
             return name  
         return super()._save(name, content)
@@ -33,7 +44,8 @@ class MenuItem(models.Model):
     description = models.TextField(blank=True, null=True)
     price = models.DecimalField(max_digits=15, decimal_places=2, blank=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='menu_items')
-    image = ProcessedImageField(upload_to='Static/images/', 
+    image = ProcessedImageField(upload_to='Static/images/',
+                                storage=CustomStaticFileStorage(), 
                                 processors=[ResizeToFit(width=310, height=140)], 
                                 format='webp', 
                                 options={'quality': 80}, 

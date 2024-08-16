@@ -143,3 +143,4 @@ prontoback/staticfiles
 gfg_QR.png
 pronto_QR.png
 prontoback/Templates/prontocode.py
+prontoback/image_crawl.py
