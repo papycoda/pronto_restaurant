@@ -36,9 +36,9 @@
             <div class="box">
               <div class="img-box">
                 {% if item.image %}
-                <img src="{{ item.image.url }}" class="card-img-top" alt="{{ item.name }}">
+                <img src="{{ item.image.url }}" class="card-img-top" alt="{{ item.name }}" loading="lazy">
                 {% elif category.default_image %}
-                <img src="{{ category.default_image.url }}" class="card-img-top" alt="{{ category.name }}">
+                <img src="{{ category.default_image.url }}" class="card-img-top" alt="{{ category.name }}" loading="lazy">
                 {% else %}
                 <div class="no-image">No Image Available</div>
                 {% endif %}
